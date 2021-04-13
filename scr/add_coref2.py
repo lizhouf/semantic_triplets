@@ -34,6 +34,7 @@ priority_he_she = ["mother", "father", "sister", "brother", "aunt", "uncle", "co
                    "police", "soldier", "officer", "commander", "rabbi", "priest", "Nazi", "German", "Jew"] # Todd
 priority_they = ["Jews", "Nazis", "soldiers", "SS", "officers", "Americans", "Russians", "Germans", "Hungarians", 
                  "Christians", "family", "Gestapo", "grandparents", "parents", "sons", "daughters"] # Todd
+not_pelace_list = ["one","man"]
 abb_list = ["t","re","m","s","d","clock"] # Leo
 
 '''
@@ -151,6 +152,10 @@ Replace
 '''
 
 # helper
+def has_word(old_str,new_str): # single word replacement
+    single_word_pattern=re.compile(r'\b%s\b' % old_str, re.I)
+    return re.match(single_word_pattern, new_str)
+
 def find_proper_replace(sub_df):
     text_to_replace = ""
     
@@ -161,13 +166,13 @@ def find_proper_replace(sub_df):
     has_priority_he_she = False
     has_priority_they = False
     for i in range(len(sub_df)):
-        if any(j in sub_df.text[i] for j in ["he","He","she","She"]):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He","she","She"]):
             has_he_she = True
-        if any(j in sub_df.text[i] for j in ["they","They"]):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["they","They"]):
             has_they = True
-        if any(k in sub_df.text[i] for k in priority_he_she):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in priority_he_she):
             has_priority_he_she = True
-        if any(k in sub_df.text[i] for k in priority_they):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in priority_they):
             has_priority_they = True
     # detect if has contrast
     if has_he_she and has_they:
@@ -183,14 +188,14 @@ def find_proper_replace(sub_df):
     
     # find priority lists
     for i in range(len(sub_df)):
-        if any(j in sub_df.text[i] for j in ["he","He","she","She"]):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He","she","She"]):
             for coref_text in sub_df.text:
-                if any(k in coref_text for k in priority_he_she):
+                if any(has_word(more_check_word,coref_text) for more_check_word in priority_he_she) and coref_text not in not_pelace_list:
                     return coref_text
-        elif any(j in sub_df.text[i] for j in ["they","They"]):
+        # TODO experiment: try to loose the rules for "they"
+        elif any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["they","They"]):
             for coref_text in sub_df.text:
-                if any(k in coref_text for k in priority_they):
-                    text_to_replace = coref_text
+                if any(has_word(more_check_word,coref_text) for more_check_word in priority_they) and coref_text not in not_pelace_list:
                     return coref_text
     
     # if not in priority, find the earliest one
@@ -307,8 +312,8 @@ def find_speaker(this_start,this_end,this_meta):
 	this_meta.starting_index = this_meta.starting_index.apply(lambda x: int(x))
 	this_meta.ending_index = this_meta.ending_index.apply(lambda x: int(x))
 	for i in range(len(this_meta)):
-		if this_meta.starting_index[i]<=this_start and this_meta.starting_index[i]>=this_end:
-			print(this_meta.speaker[i])
+		if this_meta.starting_index[i]<=this_start and this_meta.ending_index[i]>=this_end:
+			#print(this_meta.speaker[i])
 			return str(this_meta.speaker[i])
 
 
@@ -356,9 +361,10 @@ Main
 '''
 # data
 data_path = "/Users/lizhoufan/Dropbox/HGSDLab/Import_Visualize_Annotations/data/V03/"
-file_names = ["Shoah_8_cleaned",
-			"Boder_31_Henja_Frydman_en_cleaned",
-			"Boder_56_Abraham_Kimmelmann_en_cleaned"]
+# file_names = ["Shoah_8_cleaned",
+# 			"Boder_31_Henja_Frydman_en_cleaned",
+# 			"Boder_56_Abraham_Kimmelmann_en_cleaned"]
+file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned"]
 
 for name in file_names:
 	print("Starting "+name)
@@ -372,7 +378,7 @@ for name in file_names:
 	Token, Relation, final = raw2token_relation(this_txt,this_ann)
 	token_df = generate_token_df(Token,Relation,final)
 	token_df_with_coref = extract_coref_df(Relation,token_df)
-	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v03.xlsx',index=False)
+	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v04.xlsx',index=False)
 
 	# generate corefed df
 	# by replace text with coref
@@ -395,6 +401,6 @@ for name in file_names:
 
 	# deal with tri_df
 	tri_df_coref = replace_df_with_coref(tri_df,token_df)
-	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v03.xlsx',index=False)
+	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v04.xlsx',index=False)
 
 
