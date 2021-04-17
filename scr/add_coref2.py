@@ -11,6 +11,8 @@ import networkx as nx
 import itertools
 # word
 import re
+import inflect
+inflect = inflect.engine()
 # tri
 from tri_main import *
 
@@ -36,6 +38,7 @@ priority_they = ["Jews", "Nazis", "soldiers", "SS", "officers", "Americans", "Ru
                  "Christians", "family", "Gestapo", "grandparents", "parents", "sons", "daughters"] # Todd
 not_pelace_list = ["one","man"]
 abb_list = ["t","re","m","s","d","clock"] # Leo
+white_list_check_similar = ["a","an","the","this","that"] # Leo
 
 '''
 From ann and txt to Tokens in df
@@ -152,9 +155,12 @@ Replace
 '''
 
 # helper
-def has_word(old_str,new_str): # single word replacement
+def has_word(old_str,new_str): # if old_str is in new_str
     single_word_pattern=re.compile(r'\b%s\b' % old_str, re.I)
-    return re.match(single_word_pattern, new_str)
+    if re.search(single_word_pattern, new_str):
+    	return True
+    else:
+    	return False
 
 def find_proper_replace(sub_df):
     text_to_replace = ""
@@ -205,6 +211,24 @@ def find_proper_replace(sub_df):
 
     return text_to_replace
 
+def add_token_quant(token):
+	quant = "single" # by observing the results, default is single
+	inflect_token = inflect.singular_noun(token) 
+	if inflect_token:
+		if inflect_token==token:
+			quant = "single"
+		else:
+			quant = "plural"
+	else: # inflect not detectable
+		if any(has_word(to_check_word,token) for to_check_word in priority_he_she):
+			quant = "single"
+		elif any(has_word(to_check_word,token) for to_check_word in priority_they):
+			quant = "plural"
+
+	return quant
+
+
+
 def extract_coref_df(Relation,token_df):
 	# Extract coref pairs
 	count = 0
@@ -251,6 +275,10 @@ def extract_coref_df(Relation,token_df):
 	    
 	    if text_to_replace!="":
 	        token_df.loc[token_df.token.isin(token_list), 'coref_text'] = text_to_replace
+
+	# add token quantity
+	token_df["text_quant"] = token_df.text.apply(lambda x: add_token_quant(x))
+	token_df["coref_text_quant"] = token_df.coref_text.apply(lambda x: add_token_quant(x))
 
 	return token_df
 	
@@ -316,16 +344,30 @@ def find_speaker(this_start,this_end,this_meta):
 			#print(this_meta.speaker[i])
 			return str(this_meta.speaker[i])
 
+def replace_subject(to_replace_token,replace_by_token,current_subject,current_object): # single word replacement for subject
+    single_word_pattern = re.compile(r'\b%s\b' % to_replace_token, re.I)
+    # Don’t change the subject/object coreference to make them the same
+    current_object_list_clean = [word.lower() for word in current_object.split(" ") if word.lower() not in white_list_check_similar ]
+    if any(has_word(to_check_word.lower(),replace_by_token.lower()) for to_check_word in current_object_list_clean):
+        return current_subject
+    else:
+        replace_candidate = re.sub(single_word_pattern, replace_by_token, current_subject)
+        return replace_candidate
 
-def replace_word(old_str,new_str,whole_text): # single word replacement
-    single_word_pattern=re.compile(r'\b%s\b' % old_str, re.I)
-    return re.sub(single_word_pattern, new_str, whole_text)
+def replace_object(to_replace_token,replace_by_token,current_subject,current_object): # single word replacement for object
+    single_word_pattern = re.compile(r'\b%s\b' % to_replace_token, re.I)
+    current_subject_list_clean = [word.lower() for word in current_subject.split(" ") if word.lower() not in white_list_check_similar ]
+    if any(has_word(to_check_word.lower(),replace_by_token.lower()) for to_check_word in current_subject_list_clean):
+        return current_object
+    else:
+        replace_candidate = re.sub(single_word_pattern, replace_by_token, current_object)
+        return replace_candidate
 
 def replace_df_with_coref(tri_df, token_df):
 	### Apply the tokens' results to the whole df
 	### replace to a corefed version
 	# texts_og, start, end
-	# subjects, relations, objects, xts
+	# subjects, relations, objects, texts
 
 	# initiate
 	tri_df["subjects_coref"] = list(tri_df.subjects)
@@ -334,7 +376,14 @@ def replace_df_with_coref(tri_df, token_df):
 
 	# replace
 	for i in range(len(token_df)):
-		if token_df.coref_num[i]!=-1:
+		if (token_df.coref_num[i]!=-1 and # has coref
+		token_df.pos[i]=="PRON" and # only change pronouns
+		token_df.text_quant[i] == token_df.coref_text_quant[i]): # singular and plural consist - only wrong: both "", i.e. unknown
+			# if quant unknown
+			need_check = False
+			# check for they, if got replaced
+			if token_df.text[i].lower()=="they" and token_df.text[i] != token_df.coref_text[i]:
+				need_check = True
 			# adjust start and end
 			this_start = int(token_df.start[i])
 			this_end = int(token_df.end[i])
@@ -344,27 +393,37 @@ def replace_df_with_coref(tri_df, token_df):
 				df_end_j = int(tri_df.ends[j])
 				# the line of df includes token
 				if df_start_j<=this_start and df_end_j>=this_end:
+					if need_check: # if not, don't change - can't simplify!
+						tri_df.need_curation[j] = True
+					current_subject = tri_df.subjects_coref[j]
+					current_object = tri_df.objects_coref[j]
+					to_replace_token = token_df.text[i]
+					replace_by_token = token_df.coref_text[i]
 					# replace subjects
 					try: 
-						tri_df.subjects_coref[j] = replace_word(token_df.text[i],token_df.coref_text[i],tri_df.subjects_coref[j])
+						tri_df.subjects_coref[j] = replace_subject(to_replace_token,replace_by_token,current_subject,current_object)
 					except:
 						0
 					# replace objects
 					try: 
-						tri_df.objects_coref[j] = replace_word(token_df.text[i],token_df.coref_text[i],tri_df.objects_coref[j])
+						tri_df.objects_coref[j] = replace_object(to_replace_token,replace_by_token,current_subject,current_object)
 					except:
 						0
+
 	return tri_df
 
 '''
 Main
 '''
 # data
-data_path = "/Users/lizhoufan/Dropbox/HGSDLab/Import_Visualize_Annotations/data/V03/"
-# file_names = ["Shoah_8_cleaned",
+data_path = "/Users/lizhoufan/Dropbox/HGSDLab/Import_Visualize_Annotations/data/V07/"
+# file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned",
+# 			"Shoah_8_cleaned",
 # 			"Boder_31_Henja_Frydman_en_cleaned",
-# 			"Boder_56_Abraham_Kimmelmann_en_cleaned"]
-file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned"]
+# 			"fortunoff_1_cleaned"
+# 			]
+file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned",
+			]
 
 for name in file_names:
 	print("Starting "+name)
@@ -378,7 +437,7 @@ for name in file_names:
 	Token, Relation, final = raw2token_relation(this_txt,this_ann)
 	token_df = generate_token_df(Token,Relation,final)
 	token_df_with_coref = extract_coref_df(Relation,token_df)
-	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v04.xlsx',index=False)
+	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v07-2.xlsx',index=False)
 
 	# generate corefed df
 	# by replace text with coref
@@ -401,6 +460,6 @@ for name in file_names:
 
 	# deal with tri_df
 	tri_df_coref = replace_df_with_coref(tri_df,token_df)
-	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v04.xlsx',index=False)
+	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v07-2.xlsx',index=False)
 
 
