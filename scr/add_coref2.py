@@ -3,6 +3,7 @@ Import
 '''
 import pandas as pd
 import numpy as np
+import gender_guesser.detector as gender
 # NLP
 import spacy
 nlp = spacy.load('en_core_web_lg')
@@ -164,13 +165,18 @@ def has_word(old_str,new_str): # if old_str is in new_str
 
 def find_proper_replace(sub_df):
     text_to_replace = ""
-    
+    female = ['mother', 'sister', 'grandmother', 'aunt','woman','daughter']
+    male = ['father', 'brother', 'grandfather', 'uncle','man','son']
+    female_pronoun = ['she', 'her', 'herself', 'hers']
+    male_pronoun = ['he', 'him', 'himself', 'his']
     # if contradictory, don't change
     has_contra = False
     has_he_she = False
     has_they = False
     has_priority_he_she = False
     has_priority_they = False
+    gd = gender.Detector()
+
     for i in range(len(sub_df)):
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He","she","She"]):
             has_he_she = True
@@ -180,14 +186,26 @@ def find_proper_replace(sub_df):
             has_priority_he_she = True
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in priority_they):
             has_priority_they = True
+	if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ['mother', 'sister', 'grandmother', 'aunt','woman','daughter']) or has_word('female', gd.get_gender(sub_df.text[i]).replace('_'," ")):
+            is_female = True
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["she","She", 'her', 'herself']):
+            has_she = True
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ['father', 'brother', 'grandfather', 'uncle','man','son']) or has_word('male', gd.get_gender(sub_df.text[i]).replace('_'," ")):
+            is_male = True
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He", 'him', 'himself']):
+            has_he = True
     # detect if has contrast
     if has_he_she and has_they:
         has_contra =True
-    if has_he_she and has_priority_they:
+    elif has_he_she and has_priority_they:
         has_contra =True
-    if has_they and has_priority_he_she:
+    elif has_they and has_priority_he_she:
         has_contra =True
-    if has_priority_he_she and has_priority_they:
+    elif has_priority_he_she and has_priority_they:
+        has_contra =True
+    elif is_female and has_he:
+        has_contra =True
+    elif is_male and has_she:
         has_contra =True
     if has_contra:
         return text_to_replace # return empty
