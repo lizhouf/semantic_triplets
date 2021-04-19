@@ -3,7 +3,6 @@ Import
 '''
 import pandas as pd
 import numpy as np
-import gender_guesser.detector as gender
 # NLP
 import spacy
 nlp = spacy.load('en_core_web_lg')
@@ -14,6 +13,8 @@ import itertools
 import re
 import inflect
 inflect = inflect.engine()
+import gender_guesser.detector as gender
+gd = gender.Detector()
 # tri
 from tri_main import *
 
@@ -40,6 +41,10 @@ priority_they = ["Jews", "Nazis", "soldiers", "SS", "officers", "Americans", "Ru
 not_pelace_list = ["one","man"]
 abb_list = ["t","re","m","s","d","clock"] # Leo
 white_list_check_similar = ["a","an","the","this","that"] # Leo
+female = ['mother', 'sister', 'grandmother', 'aunt','woman','daughter'] # Wanxin
+male = ['father', 'brother', 'grandfather', 'uncle','man','son'] # Wanxin
+female_pronoun = ['she', 'her', 'herself', 'hers'] # Wanxin
+male_pronoun = ['he', 'him', 'himself', 'his'] # Wanxin
 
 '''
 From ann and txt to Tokens in df
@@ -165,18 +170,17 @@ def has_word(old_str,new_str): # if old_str is in new_str
 
 def find_proper_replace(sub_df):
     text_to_replace = ""
-    female = ['mother', 'sister', 'grandmother', 'aunt','woman','daughter']
-    male = ['father', 'brother', 'grandfather', 'uncle','man','son']
-    female_pronoun = ['she', 'her', 'herself', 'hers']
-    male_pronoun = ['he', 'him', 'himself', 'his']
+    
     # if contradictory, don't change
     has_contra = False
     has_he_she = False
     has_they = False
     has_priority_he_she = False
     has_priority_they = False
-    gd = gender.Detector()
-
+    is_female = False
+    has_she = False
+    is_male = False
+    has_he = False
     for i in range(len(sub_df)):
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He","she","She"]):
             has_he_she = True
@@ -186,7 +190,7 @@ def find_proper_replace(sub_df):
             has_priority_he_she = True
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in priority_they):
             has_priority_they = True
-	if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ['mother', 'sister', 'grandmother', 'aunt','woman','daughter']) or has_word('female', gd.get_gender(sub_df.text[i]).replace('_'," ")):
+        if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ['mother', 'sister', 'grandmother', 'aunt','woman','daughter']) or has_word('female', gd.get_gender(sub_df.text[i]).replace('_'," ")):
             is_female = True
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["she","She", 'her', 'herself']):
             has_she = True
@@ -455,7 +459,7 @@ for name in file_names:
 	Token, Relation, final = raw2token_relation(this_txt,this_ann)
 	token_df = generate_token_df(Token,Relation,final)
 	token_df_with_coref = extract_coref_df(Relation,token_df)
-	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v07-2.xlsx',index=False)
+	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v08.xlsx',index=False)
 
 	# generate corefed df
 	# by replace text with coref
@@ -478,6 +482,6 @@ for name in file_names:
 
 	# deal with tri_df
 	tri_df_coref = replace_df_with_coref(tri_df,token_df)
-	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v07-2.xlsx',index=False)
+	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v08.xlsx',index=False)
 
 
