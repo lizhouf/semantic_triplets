@@ -88,6 +88,8 @@ def df_cleanup_boder(filename):
         text_line = text_line.replace("Mrs . ","Mrs. ") 
         text_line = text_line.replace("Ms . ","Ms. ") 
         text_line = text_line.replace("Dr . ","Dr. ")  
+	if text_line[-1].isalnum():
+            text_line = text_line + ' .'
         length = len(text_line)
         if length != 0:
             text_0.append(i)
@@ -148,6 +150,8 @@ def df_cleanup_shoah(filename):
         text_line = text_line.replace("Mrs . ","Mrs. ") 
         text_line = text_line.replace("Ms . ","Ms. ") 
         text_line = text_line.replace("Dr . ","Dr. ")  
+	if text_line[-1].isalnum():
+            text_line = text_line + ' .'
         length = len(text_line)
         if length != 0:
             text_0.append(i)
@@ -208,6 +212,8 @@ def df_cleanup_fortunoff(filename):
         text_line = text_line.replace("Mrs . ","Mrs. ") 
         text_line = text_line.replace("Ms . ","Ms. ") 
         text_line = text_line.replace("Dr . ","Dr. ") 
+	if text_line[-1].isalnum():
+            text_line = text_line + ' .'
         length = len(text_line)
         if length != 0:
             text_0.append(i)
