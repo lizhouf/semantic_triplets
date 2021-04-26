@@ -93,6 +93,7 @@ def clean_text(text):
     # periods
     cleaned = text.replace('...',' ... ')
     cleaned = cleaned.replace('. . .',' ... ')
+    cleaned = cleaned.replace('…',' ... ')
     # slashes
     cleaned = cleaned.replace('--',' -- ')
     # brackets
@@ -118,7 +119,7 @@ def text2df(text):
     
     # get rid of - and things in between
     # get rid of things in between ""
-    sentence_pattern = re.compile(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s")
+    sentence_pattern = re.compile(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!|\…)\s")
     interviewee_list = re.split(sentence_pattern,str(text))
 
     # convert to df
@@ -260,20 +261,19 @@ def export_triplets_with_meta(text):
 
         if len(chunk_df) == 0:
             tri_df_i = pd.DataFrame({
-                "subjects": [[]],"relations": [[]],"objects": [[]], "texts": [sent], "need_curation": [False], "AEO_cat": [""], "sent_num": [i]
+                "subjects": [[]],"relations": [[]],"objects": [[]], "texts": [sent], "need_curation": [False], "AEO_cat": [""] #, "sent_num": [i]
             })
             tri_df = tri_df.append(tri_df_i)
         else:
             tri_df_i = chunk_df
             tri_df_i = add_aeo_df(chunk_df)
-            tri_df_i["sent_num"] = [i] * len(tri_df_i)
+            #tri_df_i["sent_num"] = [i] * len(tri_df_i)
             tri_df = tri_df.append(tri_df_i)
-    # clean df with meta
-    tri_df = clean_df(tri_df)
-    #print(tri_df.head())
 
+    # clean df with meta
     # add more meta, object-based clustering
     try:
+        tri_df = clean_df(tri_df)
         tri_df["objects_tokens"] = tri_df.objects.apply(lambda x: nlp(str(x)))
         tri_df["relations_tokens"] = tri_df.relations.apply(lambda x: nlp(str(x)))
         tri_df = add_obj_based_cluster(tri_df)
@@ -281,6 +281,7 @@ def export_triplets_with_meta(text):
 
     except:
         print("There is NO triplet extracted in this text.")
+        return pd.DataFrame() # check if needed?
 
 
 '''

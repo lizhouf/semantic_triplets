@@ -333,6 +333,7 @@ def clean_text(text):
 	# periods
 	cleaned = full_str.replace('...',' ... ')
 	cleaned = cleaned.replace('. . .',' ... ')
+	cleaned = cleaned.replace('…',' ... ')
 	# slashes
 	cleaned = cleaned.replace('--',' -- ')
 	# brackets
@@ -349,7 +350,7 @@ def clean_text(text):
 
 def text2sentences(this_txt): 
 	# first split
-	sentence_pattern = re.compile(r"((?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s)") # with capturing
+	sentence_pattern = re.compile(r"((?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!|\…)\s)") # with capturing
 	sentences = re.split(sentence_pattern,this_txt)	
 	# then clean
 	sentences_clean = [clean_text(sent) for sent in sentences]	
@@ -438,14 +439,15 @@ def replace_df_with_coref(tri_df, token_df):
 Main
 '''
 # data
-data_path = "/Users/lizhoufan/Dropbox/HGSDLab/Import_Visualize_Annotations/data/V07/"
-# file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned",
-# 			"Shoah_8_cleaned",
-# 			"Boder_31_Henja_Frydman_en_cleaned",
-# 			"fortunoff_1_cleaned"
-# 			]
-file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned",
+data_path = "/Users/lizhoufan/Dropbox/HGSDLab/Import_Visualize_Annotations/data/V09/"
+file_names = ["Boder_99_Edith_Serras_en_cleaned", # note: this is annotated by Jack -> 100% correct
+			# "Shoah_16_cleaned",
+			# "Boder_31_Henja_Frydman_en_cleaned",
+			# "fortunoff_1_cleaned"
 			]
+# file_names = ["Boder_56_Abraham_Kimmelmann_en_cleaned",
+#				"Shoah_8_cleaned"
+# 			]
 
 for name in file_names:
 	print("Starting "+name)
@@ -459,7 +461,7 @@ for name in file_names:
 	Token, Relation, final = raw2token_relation(this_txt,this_ann)
 	token_df = generate_token_df(Token,Relation,final)
 	token_df_with_coref = extract_coref_df(Relation,token_df)
-	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v08.xlsx',index=False)
+	token_df_with_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tokens_with_coref_v09.xlsx',index=False)
 
 	# generate corefed df
 	# by replace text with coref
@@ -482,6 +484,6 @@ for name in file_names:
 
 	# deal with tri_df
 	tri_df_coref = replace_df_with_coref(tri_df,token_df)
-	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v08.xlsx',index=False)
+	tri_df_coref.to_excel(data_path+name.split("_")[0]+"_"+name.split("_")[1]+'_tri_with_coref_v09.xlsx',index=False)
 
 
