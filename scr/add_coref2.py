@@ -168,9 +168,9 @@ def has_word(old_str,new_str): # if old_str is in new_str
     else:
     	return False
 
-def find_proper_replace(sub_df):
+def find_proper_replace(sub_df,customize_priority=False, priority_dict=None):
     text_to_replace = ""
-    
+
     # if contradictory, don't change
     has_contra = False
     has_he_she = False
@@ -213,21 +213,32 @@ def find_proper_replace(sub_df):
         has_contra =True
     if has_contra:
         return text_to_replace # return empty
-    
+
+
     # find priority lists
     for i in range(len(sub_df)):
         if any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["he","He","she","She"]):
+            if customize_priority:
+                for k,v in priority_dict.items():
+                    if k in list(sub_df.text):
+                        print(1)
+                        return k
             for coref_text in sub_df.text:
                 if any(has_word(more_check_word,coref_text) for more_check_word in priority_he_she) and coref_text not in not_pelace_list:
                     return coref_text
         # TODO experiment: try to loose the rules for "they"
         elif any(has_word(to_check_word,sub_df.text[i]) for to_check_word in ["they","They"]):
+            if customize_priority:
+                for k,v in priority_dict.items():
+                    if k in list(sub_df.text):
+                        print(1)
+                        return k
             for coref_text in sub_df.text:
                 if any(has_word(more_check_word,coref_text) for more_check_word in priority_they) and coref_text not in not_pelace_list:
                     return coref_text
-    
+
     # if not in priority, find the earliest one
-    for i in range(len(sub_df)):      
+    for i in range(len(sub_df)):
         if sub_df.pos[i] !="PRON":
             return sub_df.text[i]
 
@@ -251,7 +262,7 @@ def add_token_quant(token):
 
 
 
-def extract_coref_df(Relation,token_df):
+def extract_coref_df(Relation,token_df,customize_priority=False, priority_dict=None):
 	# Extract coref pairs
 	count = 0
 	L = []
@@ -293,17 +304,13 @@ def extract_coref_df(Relation,token_df):
 	        token_df.loc[token_df.token == token, 'coref_num'] = key
 	        # find the proper replacement
 	    sub_df = token_df[token_df.coref_num==key].reset_index(drop=True)
-	    text_to_replace = find_proper_replace(sub_df)
-	    
+	    text_to_replace = find_proper_replace(sub_df,customize_priority=customize_priority, priority_dict=priority_dict)
+
 	    if text_to_replace!="":
 	        token_df.loc[token_df.token.isin(token_list), 'coref_text'] = text_to_replace
 
-	# add token quantity
-	token_df["text_quant"] = token_df.text.apply(lambda x: add_token_quant(x))
-	token_df["coref_text_quant"] = token_df.coref_text.apply(lambda x: add_token_quant(x))
-
 	return token_df
-	
+
 '''
 Pre-process
 '''
