@@ -221,7 +221,7 @@ def find_proper_replace(sub_df,customize_priority=False, priority_dict=None):
             if customize_priority:
                 for k,v in priority_dict.items():
                     if k in list(sub_df.text):
-                        print(1)
+                        print('using priority_dict')
                         return k
             for coref_text in sub_df.text:
                 if any(has_word(more_check_word,coref_text) for more_check_word in priority_he_she) and coref_text not in not_pelace_list:
@@ -231,7 +231,7 @@ def find_proper_replace(sub_df,customize_priority=False, priority_dict=None):
             if customize_priority:
                 for k,v in priority_dict.items():
                     if k in list(sub_df.text):
-                        print(1)
+                        print('using priority_dict')
                         return k
             for coref_text in sub_df.text:
                 if any(has_word(more_check_word,coref_text) for more_check_word in priority_they) and coref_text not in not_pelace_list:
