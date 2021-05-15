@@ -902,13 +902,22 @@ def pred_input(pred_filename):
     for i in range(len(ex)):
         if k == 0:
             for w in all:
-                if ex[i:i+w[1]].lower() == w[0]:
-                    if ex[i-1:i] == ' ' and ex[i+w[1]:i+w[1]+1] == ' ':
-                        if i+w[1] not in ending:
-                            new.append(list([ex[i:i+w[1]], "PERSON",i,i+w[1]]))
-                            ending.append(i+w[1])
-                            k = w[1]
-                            break
+                if i ==0:
+                    if ex[i:i+w[1]].lower() == w[0]:
+                        if ex[i+w[1]:i+w[1]+1] == ' ':
+                            if i+w[1] not in ending:
+                                new.append(list([ex[i:i+w[1]], "PERSON",i,i+w[1]]))
+                                ending.append(i+w[1])
+                                k = w[1]
+                                break
+                else:    
+                    if ex[i:i+w[1]].lower() == w[0]:
+                        if ex[i-1:i] == ' ' and ex[i+w[1]:i+w[1]+1] == ' ':
+                            if i+w[1] not in ending:
+                                new.append(list([ex[i:i+w[1]], "PERSON",i,i+w[1]]))
+                                ending.append(i+w[1])
+                                k = w[1]
+                                break
         else:
             k -= 1
 
