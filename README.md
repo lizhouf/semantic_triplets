@@ -1,2 +1,2 @@
-# semantic_triplets
+# Semantic Triplets
 Repository for the Digital Humanities Project Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies.
