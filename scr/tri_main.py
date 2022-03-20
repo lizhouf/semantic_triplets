@@ -132,9 +132,6 @@ def text2df(text):
 Post-moderation
 '''
 
-# special list
-wh_list = ["who","what","how","why","where","when","whom","Who","What","How","Why","Where","When","Whom"]
-
 def to_string(the_list):
     '''
     Turn subjects, relations, and objects into string.
@@ -281,7 +278,7 @@ def export_triplets_with_meta(text):
 
     except:
         print("There is NO triplet extracted in this text.")
-        return pd.DataFrame() # check if needed?
+        return pd.DataFrame()
 
 
 '''
