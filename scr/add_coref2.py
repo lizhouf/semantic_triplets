@@ -18,14 +18,13 @@ gd = gender.Detector()
 # tri
 from tri_main import *
 
+'''
+Example Key Word Lists for Prority Checking
+'''
 # note: some of the functions,
 # including raw2token_relation, generate_token_df, and extract_coref_df
 # are partly converted from Wanxin Xie's earlier code
 # the creators of some of the word lists are also marked
-
-'''
-Word Lists
-'''
 pron = ["i","me","we","us","you","she","her","he","him","it","they","them",
         "who","whom","whose","whomever",
         "anybody","anyone","everybody","everyone",
