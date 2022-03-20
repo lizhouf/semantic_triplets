@@ -74,11 +74,11 @@ from gensim.models import KeyedVectors
 from scipy import spatial
 
 '''
-Word Lists
+Example Key Words
 '''
-evaluation_verbs = ["feel","smell","taste","look","hear","see","think","know"] # priority than orien
-orientation_verbs = ["remember","bear","grow","belong"] # need more human input - how to get more?
-imagine_verbs = ["want","should","would","could","can","might","may"] #? more subjunctive verbs? model verbs?
+evaluation_verbs = ["feel","smell","taste","look","hear","see","think","know"]
+orientation_verbs = ["remember","bear","grow","belong"]
+imagine_verbs = ["want","should","would","could","can","might","may"]
 
 '''
 AEO
@@ -112,7 +112,6 @@ def add_aeo_df(df): # chunk_tri df
 
         # give value
         for rel in this_rel:
-            #             print(rel.lemma_)
 
             # rel lemmas
             try:
@@ -160,7 +159,7 @@ def add_aeo_df(df): # chunk_tri df
             except:
                 0
 
-        for obj in this_obj:  # seperate, as want to break
+        for obj in this_obj:  # seperate, want to break
             # obj pos
             try:
                 if obj.pos == ADJ:
@@ -216,11 +215,6 @@ def add_aeo_df(df): # chunk_tri df
         # if none of the above, then judge:
         cat_list.append("Agency_Active")
 
-    #     print(len(df))
-    #     print(len(cat_list))
     df["AEO_cat"] = cat_list
-    #     print(df)
-
-    # print("AEO",df.head())
 
     return df
