@@ -423,7 +423,7 @@ def order_chunks_in_df(df_combined,doc):
         # if NVNVN (should be not appended - so the last VN is an indirect object)
         # find the position of the first V
         elif "NVNVN" in str_area_cat:
-            v_pos = area_df.index[area_df.category == "V"][0]  # should has len>=1
+            v_pos = area_df.index[area_df.category == "V"][0]  # should have len>=1
             # append
             try:
                 triplets_sub.append(simple_sub(area_df.ele[v_pos - 1]))
@@ -436,7 +436,7 @@ def order_chunks_in_df(df_combined,doc):
         # we keep the first V
         elif "NVNV" in str_area_cat:
             # find the position of the first V
-            v_pos = area_df.index[area_df.category == "V"][0]  # should has len>=1
+            v_pos = area_df.index[area_df.category == "V"][0]  # should have len>=1
             # append
             try:
                 triplets_sub.append(simple_sub(area_df.ele[v_pos - 1]))
@@ -466,7 +466,7 @@ def order_chunks_in_df(df_combined,doc):
         # otherwise, if more than NVN, only keep the NVN
         elif "NVN" in str_area_cat and str_area_cat.count("V") == 1:
             # find the position of V
-            v_pos = area_df.index[area_df.category == "V"][0]  # should only has len 1
+            v_pos = area_df.index[area_df.category == "V"][0]  # should only have len 1
             # append
             triplets_sub.append(area_df.ele[v_pos - 1])
             triplets_rel.append(area_df.ele[v_pos])
