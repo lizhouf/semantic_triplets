@@ -1,11 +1,11 @@
 # Semantic Triplets for Algorithmic Close Reading
-This repository provides the code structure for using rule-based NLP methods to extract semantic triplets from Holocuast testimonies. 
+This repository provides the code structure for using rule-based NLP methods to extract semantic triplets from Holocaust testimonies. 
 You can also download and try our process.
 To start, call the `export_triplets_with_meta` function in `tri_main.py`.
 Several test cases are commented out for your reference.
 If you have any further question, please contact us at lizhouf@umich.edu or presner@ucla.edu
 
-Below, we provide two sample texts that can be used to run the semantic triplet extraction process. The CSV file gives in the [data folder](https://github.com/lizhouf/semantic_triplets/blob/main/data/) are the raw outputs, without any correction or curation. The manual annotations (column H) are provided to indicate clarifications, shortcomings, and/or corrections. 
+Below, we provide two sample texts that can be used to run the semantic triplet extraction process. The CSV file in the [data folder](https://github.com/lizhouf/semantic_triplets/blob/main/data/) are the raw outputs, without any correction or curation. The manual annotations (column H) are provided to indicate clarifications, shortcomings, and/or corrections. 
 
 Note: the coreference and object-based clustering are beta versions, which are not included in the Example outputs.
 
