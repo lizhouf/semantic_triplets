@@ -4,7 +4,7 @@ To start, call the `export_triplets_with_meta` function in `tri_main.py`.
 Several test cases are commented out for your reference.
 If you have any further question, please contact us at lizhouf@umich.edu or presner@ucla.edu
 
-Below, we provide two sample texts that can be used to run the semantic triplet extraction process. The CSV file gives the raw outputs, without any correction or curation. The manual annotations (column H) are provided to indicate clarifications, shortcomings, and/or corrections. 
+Below, we provide two sample texts that can be used to run the semantic triplet extraction process. The CSV file gives in the [data folder](https://github.com/lizhouf/semantic_triplets/blob/main/data/) are the raw outputs, without any correction or curation. The manual annotations (column H) are provided to indicate clarifications, shortcomings, and/or corrections. 
 
 **EXAMPLE 1: Excerpt of Erika Jacoby’s testimony from the USC Shoah Foundation Visual History Archive** (Interview 8, recorded 1994). [514 words, 52 triplets extracted]
 
