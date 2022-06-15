@@ -200,16 +200,12 @@ def remove_repetitive(S):
     # Traversing all combinations of string
     for i in range(len(S)):
         n_list = range(1,int(len(S[i:])/2)+1)
-        #print("position:",i)
         for n in n_list:
             the_current = " ".join(S[i:i+n])
-            #print(the_current)
             next_start = i+n
             next_end = next_start+n
             the_next = " ".join(S[next_start:next_end])
-            #print(the_next)
             if the_next == the_current:
-                #print("!!!repetitive here!!!")
                 positions_to_remove = positions_to_remove + list(range(next_start,next_end))
 
     new_str=""
