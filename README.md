@@ -6,6 +6,8 @@ If you have any further question, please contact us at lizhouf@umich.edu or pres
 
 Below, we provide two sample texts that can be used to run the semantic triplet extraction process. The CSV file gives in the [data folder](https://github.com/lizhouf/semantic_triplets/blob/main/data/) are the raw outputs, without any correction or curation. The manual annotations (column H) are provided to indicate clarifications, shortcomings, and/or corrections. 
 
+Note: the coreference and object-based clustering are beta versions, which are not included in the Example outputs.
+
 **EXAMPLE 1: Excerpt of Erika Jacoby’s testimony from the USC Shoah Foundation Visual History Archive** (Interview 8, recorded 1994). [514 words, 52 triplets extracted]
 
 The next morning, we got out of the camp. And we went into town. And we looked for a house that was abandoned. And we found a very beautiful home, and we occupied it. We were 15 of us together from the same city. And my mother was the oldest. She was kind of the leader. And we got in there, and we couldn't lock the door, but we learned how to barricade it at night. And then I went out with one of my cousins, or one of my friends, to look for food. And the town was deserted. And the stores, of course-- there were all kinds of prisoners out looking for food. And they broke into the stores. 
