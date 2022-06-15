@@ -75,7 +75,7 @@ from scipy import spatial
 
 
 dict_path = "/Users/lizhoufan/Dropbox/HGSDLab/Ch6/Data/Raw/" # need to change directory later
-cat_dict = pd.read_excel(dict_path+"Shoah_cat_list_tp.xlsx") # v2 is more general
+cat_dict = pd.read_excel(dict_path+"Shoah_cat_list_tp.xlsx") 
 cat_dict.keywords = cat_dict.keywords.apply(lambda x: str(x).strip().replace(",","").split(" ")) # change to lists
 
 def find_wn_noun(word):
@@ -118,14 +118,11 @@ def add_obj_based_cluster(df): # df MUST have column "objects_tokens"
         category = ""
         for j in range(len(df.objects_tokens[i])): # keep the category of the first element if 2+ nouns
             word = df.objects_tokens[i][j]
-            #print(word)
             category = ""
             try:
                 category = find_shoah_cat(word,cat_dict=cat_dict)
-                #print("Success.")
                 continue # the first -> break # if the last -> continue
             except:
-                #print("NOT Success.")
                 0
         
         if category=="Others":
