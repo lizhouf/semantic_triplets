@@ -1,0 +1,60 @@
+,subjects,relations,objects,texts,need_curation,AEO_cat,annotation
+0,we,got,out of the camp,"
+The next morning, we got out of the camp.",FALSE,Agency_Active,
+0,we,went,into town,And we went into town.,FALSE,Agency_Active,
+0,we,looked,for a house that was abandoned,And we looked for a house that was abandoned.,FALSE,Agency_Active,
+0,we,found,a very beautiful home,"And we found a very beautiful home, and we occupied it.",FALSE,Agency_Active,
+1,we,occupied,it,"And we found a very beautiful home, and we occupied it.",FALSE,Agency_Active,column A shows a second triplet was extracted from this sentence
+0,We,were,15 of us together from the same city,We were 15 of us together from the same city.,FALSE,Orientation,
+0,my mother,was,the oldest,And my mother was the oldest.,FALSE,Evaluation,
+0,She,was,kind of the leader,She was kind of the leader.,FALSE,Orientation,
+0,we,could not lock,the door,"And we got in there, and we couldn't lock the door, but we learned how to barricade it at night.",FALSE,Agency_Speculative/Modal,
+1,we,learned how to barricade,it at night,"And we got in there, and we couldn't lock the door, but we learned how to barricade it at night.",FALSE,Agency_Active,
+0,I,went,out with one of my cousins one of my friends,"And then I went out with one of my cousins, or one of my friends, to look for food.",FALSE,Agency_Active,"operators (or, and) are omitted "
+1,I,to look,for food,"And then I went out with one of my cousins, or one of my friends, to look for food.",FALSE,Agency_Active,longer sentences are broken into parts
+0,,,,And the town was deserted.,FALSE,,
+0,all kinds of prisoners,out looking,for food,"And the stores, of course -- there were all kinds of prisoners out looking for food.",FALSE,Agency_Active,the verb 'were' is connected to 'there' 
+0,they,broke,into the stores,And they broke into the stores.,FALSE,Agency_Active,
+0,we,broke,into one of the bakeries,And we broke into one of the bakeries.,FALSE,Agency_Active,
+0,I,shoved,a lot of bread,"And I shoved a lot of bread into my -- we had a canvas bag of some sort, or a burlap bag that I got.",FALSE,Agency_Active,the rest of the phrase is truncated because of how it's spoken
+1,we,had,a canvas bag of some sort a burlap bag that I got,"And I shoved a lot of bread into my -- we had a canvas bag of some sort, or a burlap bag that I got.",FALSE,Orientation,
+0,we,passed,by a butcher store,And then we passed by a butcher store.,FALSE,Agency_Active,
+0,pigs,hanging,on the hook,And there were pigs hanging on the hook.,FALSE,Agency_Active,
+0,I,took,off half a pig,"And I took off half a pig, and carried it on my back back to the house.",FALSE,Agency_Active,
+0,my mother,saw,it,"And my mother saw it, and she said good.",TRUE,Agency_Active,
+1,she,said,good,"And my mother saw it, and she said good.",TRUE,Agency_Active,"""curate=true"" for reported speech"
+0,We,now have,what to eat,We now have what to eat.,FALSE,Orientation,
+0,she,cooked,the pig,And she cooked the pig.,FALSE,Agency_Active,
+0,we,ate,it,"We religious Jews who never ate anything, and we ate it.",FALSE,Agency_Active,
+0,we,all got,sick,"And of course, we all got sick.",FALSE,Agency_Active,
+0,we,thought,it was punishment,"And of course, we thought it was punishment for eating it.",FALSE,Agency_Active,
+0,we,still had,what to eat for a few days,But we still had what to eat for a few days.,FALSE,Orientation,
+0,,,,"Eventually, my mother had to go out and work for some Germans, some farmers, so that we could survive.",FALSE,,triplet not found here
+0,,,,Some of us went out to eat.,FALSE,,
+0,I,was trying,to find,And I was trying to find a way to get back to Hungary.,FALSE,Agency_Active,the rest of the phrase is truncated
+0,We,stayed,in this town for many weeks,"We stayed in this town for many, many weeks.",FALSE,Agency_Active,
+0,I,want to mention,to you,"Now, one incident that I want to mention to you.",FALSE,Agency_Speculative/Modal,
+0,I,did not bring,it,Unfortunately I didn't bring it over here.,FALSE,Orientation,
+0,I,have,a memento from this area,I have a memento from this area.,FALSE,Orientation,
+0,I,broke,into a house,I broke into a house.,FALSE,Agency_Active,
+0,,,,That was like the following day.,FALSE,,
+0,I,think,it was the house of the owner,I think it was the house of the owner of the factory where I worked.,FALSE,Agency_Active,"""of the factory"" is left out"
+0,I,had,so much anger in me,"And by this time, I had so much anger in me.",FALSE,Orientation,
+0,I,expressed,that anger,This was probably the only time that I expressed that anger.,FALSE,Agency_Active,
+0,I,went,into that house with an ax,I went into that house with an ax.,FALSE,Agency_Active,
+0,I,broke,the piano furniture the Dutch masters on the wall,I broke the piano and furniture and the Dutch masters on the wall.,FALSE,Agency_Active,
+0,,,,"Whatever I could, I destroyed.",FALSE,,
+0,many people,went,into homes to rob,"Now, many people went into homes to rob.",FALSE,Agency_Active,
+0,I,did not want,anything,"I did not want anything, except for three things that I took from the house.",FALSE,Agency_Speculative/Modal,
+1,three things that I,took,from the house,"I did not want anything, except for three things that I took from the house.",FALSE,Agency_Active,
+0,I,took,a white tablecloth,I took a white tablecloth.,FALSE,Agency_Active,
+0,I,took,an apron,I took an apron.,FALSE,Agency_Active,
+0,I,took,a little silver cup that I still have that had the initials EF on it,And I took a little silver cup that I still have that had the initials EF on it.,FALSE,Agency_Active,
+0,I,decided,that I would pretend that belonged to my grandfather whose name was Engel Farkas,And I decided that I would pretend that that belonged to my grandfather whose name was Engel Farkas.,FALSE,Agency_Active,
+0,I,took,that with me,"And I took that with me, and I kept it.",FALSE,Agency_Active,
+1,I,kept,it,"And I took that with me, and I kept it.",FALSE,Agency_Active,
+0,,,,And I really didn't understand.,FALSE,,
+0,I,was,16 I did not understand that this was,"I was 16 by now, but I didn't understand that this was -- that I longed to establish normal life again, and these were the symbols of my home -- a white tablecloth, an apron, and a kiddush cup.",FALSE,Orientation,the phrase is spoken with a break
+1,I,longed to establish,normal life,"I was 16 by now, but I didn't understand that this was -- that I longed to establish normal life again, and these were the symbols of my home -- a white tablecloth, an apron, and a kiddush cup.",FALSE,Agency_Active,
+2,I,these were,the symbols of my home a white tablecloth an apron a kiddush cup,"I was 16 by now, but I didn't understand that this was -- that I longed to establish normal life again, and these were the symbols of my home -- a white tablecloth, an apron, and a kiddush cup.",FALSE,Orientation,subject should be 'these' 
+0,,,,So emotional.,FALSE,,
