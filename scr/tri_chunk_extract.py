@@ -276,86 +276,6 @@ def filter_sort_chunks_df(vc_list,nc_list):
 
     return df
 
-## Chunks are no longer combined in this way...
-# def combine_chunks_in_df(df,doc):
-#     ### Combine
-
-#     # add subcategory to the df
-#     sub_cat_list = []
-#     for i in range(len(df)):
-#         this_cat = df.category[i]
-#         sub_cat = ""
-#         # vp means verb phrase and np means noun phrase
-
-#         if this_cat=="V":
-#             if any(j in [token.text.lower() for token in df.ele[i]] for j in speaking_verbs):
-#                 sub_cat = "speaking_vp"
-#             elif df.ele[i][0].pos_ == "PART": #any(j in [token.pos_ for token in df.ele[i]] for j in ["PART"]) and : # main need improve!
-#                 sub_cat = "infinitive_vp"
-#             else:
-#                 sub_cat = "normal_vp"
-
-#         elif this_cat=="N":
-#             if df.ele[i][0].pos_ == "ADP":# any(j in [token.pos_ for token in df.ele[i]] for j in ["ADP"]):
-#                 sub_cat = "indirect_np"
-#             elif not any(j in [token.pos_ for token in df.ele[i]] for j in ["NOUN","PRON","PROPN"]):
-#                 sub_cat = "adj_num_np"
-#             else:
-#                 sub_cat = "normal_np"
-#         sub_cat_list.append(sub_cat)
-#     df["subcat"] = sub_cat_list
-
-#     #print(df)
-
-#     # start choosing...
-
-#     ele_list = []
-#     pos_list = []
-#     cat_list = []
-#     subcat_list = []
-#     should_jump = False
-
-#     for i in range(len(df)):
-#         if should_jump == True:
-#             should_jump = False
-#             continue
-#         this_subcat = df.subcat[i]
-
-#         # fix - infinitive_vp
-#         try:
-#             if this_subcat == "infinitive_vp" and df.category[i-1]=="N" and df.category[i+1]=="N":
-#                 ele_list[-1] = doc[df.position[i-1][0]:df.position[i+1][-1]+1]
-#                 pos_list[-1] = df.position[i-1]+df.position[i]+df.position[i+1]
-#                 should_jump = True
-#                 continue
-#         except:
-#             0
-
-#         # fix - indirect_np
-#         try:
-#             if this_subcat == "indirect_np" and df.category[i-1]=="N":
-#                 ele_list[-1] = doc[df.position[i-1][0]:df.position[i][-1]+1]
-#                 pos_list[-1] = df.position[i-1]+df.position[i]
-#                 continue
-#         except:
-#             0
-
-#         # all other situations
-#         ele_list.append(df.ele[i])
-#         pos_list.append(df.position[i])
-#         cat_list.append(df.category[i])
-#         subcat_list.append(df.subcat[i])
-
-
-#     df_combined = pd.DataFrame({"ele":ele_list,
-#                                 "position":pos_list,
-#                                 "category":cat_list,
-#                                 "subcat":subcat_list,
-#                                 "start":[i[0] for i in pos_list],
-#                                 "end":[i[-1] for i in pos_list]})
-
-#     return df_combined
-
 def order_chunks_in_df(df_combined,doc):
     '''
     Order all chunks.
@@ -544,10 +464,6 @@ def chunk_tri(sent):
     doc = textacy.make_spacy_doc(sent,lang='en_core_web_lg')
     vc_list,nc_list = all_possible_chunks(doc)
     df = filter_sort_chunks_df(vc_list,nc_list)
-    #print(df)
-    # df_combined = combine_chunks_in_df(df,doc)
-    # print(df_combined)
-    # tri_df = order_chunks_in_df(df_combined,doc)
     tri_df = order_chunks_in_df(df,doc)
     tri_df["texts"] = [sent] * len(tri_df)
     # curation & remove
