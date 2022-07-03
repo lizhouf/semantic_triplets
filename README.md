@@ -13,7 +13,7 @@ To cite our work, please use either of the the following ways:
 
 > Fan, L., &amp; Presner, T. (2022). Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies. Digital Humanities Quarterly, 16(3). 
 
-## Download and try our process.
+## Implementation
 To start, call the `export_triplets_with_meta` function in `tri_main.py`.
 Several test cases are commented out for your reference.
 If you have any further question, please contact us at lizhouf@umich.edu or presner@ucla.edu
