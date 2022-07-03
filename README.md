@@ -1,5 +1,5 @@
 # Semantic Triplets for Algorithmic Close Reading
-This repository provides the code structure for using rule-based NLP methods to extract semantic triplets from Holocaust testimonies. 
+This repository corresponds to the article [Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies](http://www.digitalhumanities.org/dhq/vol/16/3/000623/000623.html) and provides the code structure for using rule-based NLP methods to extract semantic triplets from Holocaust testimonies.
 You can also download and try our process.
 To start, call the `export_triplets_with_meta` function in `tri_main.py`.
 Several test cases are commented out for your reference.
