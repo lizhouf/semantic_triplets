@@ -2,7 +2,12 @@
 This repository corresponds to the article [Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies](http://www.digitalhumanities.org/dhq/vol/16/3/000623/000623.html) and provides the code structure for using rule-based NLP methods to extract semantic triplets from Holocaust testimonies.
 
 To cite please use the following BibTex:
+
 @article{fan_presner_2022, title={Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies}, volume={16}, number={3}, journal={Digital Humanities Quarterly}, author={Fan, Lizhou and Presner, Todd}, year={2022}} 
+
+Or APA7
+
+> Fan, L., &amp; Presner, T. (2022). Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies. Digital Humanities Quarterly, 16(3). 
 
 ## Download and try our process.
 To start, call the `export_triplets_with_meta` function in `tri_main.py`.
