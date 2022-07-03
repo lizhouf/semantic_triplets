@@ -9,7 +9,7 @@ To cite our work, please use either of the the following ways:
 @article{fan_presner_2022, title={Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies}, volume={16}, number={3}, journal={Digital Humanities Quarterly}, author={Fan, Lizhou and Presner, Todd}, year={2022}} 
 ```
 
-* APA7
+* APA:
 
 > Fan, L., &amp; Presner, T. (2022). Algorithmic Close Reading: Using Semantic Triplets to Index and Analyze Agency in Holocaust Testimonies. Digital Humanities Quarterly, 16(3). 
 
